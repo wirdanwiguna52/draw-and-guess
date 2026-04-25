@@ -191,7 +191,7 @@ a{text-decoration:none;color:inherit}
 
 /* Mobile */
 @media(max-width:768px){
-  /* Fix mobile viewport height (address bar issue) */
+  /* Fix mobile viewport height */
   html,body{height:100%;height:100dvh;overflow:hidden}
   .screen{height:100%;height:100dvh}
 
@@ -199,78 +199,82 @@ a{text-decoration:none;color:inherit}
   #lobbyScreen{overflow-y:auto;align-items:flex-start;padding-top:20px}
   .lobby-container{padding:16px;max-width:100%}
   .lobby-title{font-size:2rem}
-  .lobby-card{padding:20px}
-  .lobby-header{margin-bottom:20px}
+  .lobby-card{padding:16px}
+  .lobby-header{margin-bottom:16px}
   .avatar-grid{gap:6px}
-  .avatar-option{width:38px;height:38px;font-size:1.2rem}
+  .avatar-option{width:36px;height:36px;font-size:1.1rem}
   .code-box{font-size:1.4rem;letter-spacing:4px;padding:8px 14px}
 
-  /* Topbar compact */
-  .game-topbar{padding:4px 10px;min-height:40px;gap:4px}
+  /* Topbar - single row, compact */
+  .game-topbar{padding:4px 8px;min-height:36px;gap:4px}
   .topbar-left{gap:6px;flex:1;min-width:0}
-  .round-info{font-size:0.65rem;padding:2px 8px}
-  .word-hint{font-size:0.9rem;letter-spacing:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-  .timer-circle{width:32px;height:32px;flex-shrink:0}
-  .timer-text{font-size:0.7rem}
+  .round-info{font-size:0.6rem;padding:2px 6px}
+  .word-hint{font-size:0.85rem;letter-spacing:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .timer-circle{width:30px;height:30px;flex-shrink:0}
+  .timer-text{font-size:0.65rem}
   .topbar-center{flex-shrink:0}
-  .drawer-name{font-size:0.7rem;max-width:80px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .topbar-right{display:none}
 
   /* Hide desktop sidebar, show mobile bar */
   .players-sidebar{display:none}
-  .mobile-players-bar{display:flex}
+  .mobile-players-bar{display:flex;flex-direction:row;align-items:center;overflow-x:auto;gap:4px;padding:4px 8px;background:var(--bg2);border-bottom:1px solid var(--border);flex-shrink:0;min-height:44px}
 
-  /* Game layout vertical, fill all space */
+  /* Game layout vertical */
   .game-main{flex-direction:column;flex:1;min-height:0}
 
-  /* Canvas area takes remaining space */
+  /* Canvas takes remaining space */
   .canvas-area{flex:1;min-height:0;overflow:hidden}
   .canvas-wrapper{flex:1;min-height:0}
 
-  /* Tools compact, single row scroll */
-  .tools-bar{gap:4px;padding:4px 6px;overflow-x:auto;flex-wrap:nowrap;-webkit-overflow-scrolling:touch;min-height:36px}
-  .color-palette{flex-wrap:nowrap;gap:2px}
-  .color-swatch{width:20px;height:20px;flex-shrink:0}
-  .size-slider{flex-shrink:0}
-  .size-slider input[type=range]{width:50px}
+  /* Tools - compact, all visible in one row */
+  .tools-bar{gap:3px;padding:3px 6px;overflow-x:auto;flex-wrap:nowrap;-webkit-overflow-scrolling:touch;min-height:32px;align-items:center}
+  .color-palette{flex-wrap:nowrap;gap:1px;flex-shrink:0}
+  .color-swatch{width:18px;height:18px;flex-shrink:0}
+  .tool-group{flex-shrink:0}
+  .tool-btn{padding:3px 6px;font-size:0.8rem;flex-shrink:0}
+  .size-slider{flex-shrink:0;gap:3px}
+  .size-slider input[type=range]{width:40px}
   .size-slider label{display:none}
-  .tool-btn{padding:4px 8px;font-size:0.9rem;flex-shrink:0}
 
-  /* Overlays properly sized on mobile */
+  /* Overlays */
   .overlay-content{padding:16px}
   .overlay-content h3{font-size:1rem;margin-bottom:12px}
   .word-choice-btn{padding:10px 18px;font-size:0.9rem}
 
-  /* Chat at bottom - ALWAYS visible, never hidden */
-  .chat-area{width:100%;border-left:none;border-top:1px solid var(--border);flex-shrink:0;display:flex;flex-direction:column;max-height:200px;min-height:90px}
-  .chat-toggle{display:block;flex-shrink:0}
-  .chat-messages{flex:1;overflow-y:auto;min-height:0;padding:6px 8px;gap:3px}
-  .chat-msg{font-size:0.75rem;padding:4px 8px}
-  .chat-input-row{padding:4px;flex-shrink:0}
-  .chat-input-row input{padding:8px 10px;font-size:0.8rem}
-  .btn-send{padding:8px 12px;font-size:0.9rem}
+  /* Chat - compact, always has input visible */
+  .chat-area{width:100%;border-left:none;border-top:1px solid var(--border);flex-shrink:0;display:flex;flex-direction:column;max-height:150px;min-height:70px}
+  .chat-toggle{display:block;flex-shrink:0;padding:4px 12px;font-size:0.7rem}
+  .chat-messages{flex:1;overflow-y:auto;min-height:0;padding:4px 6px;gap:2px}
+  .chat-msg{font-size:0.7rem;padding:3px 6px}
+  .chat-input-row{padding:3px;flex-shrink:0}
+  .chat-input-row input{padding:6px 8px;font-size:0.75rem}
+  .btn-send{padding:6px 10px;font-size:0.85rem}
 
-  /* Collapsed chat = only toggle + input visible */
+  /* Collapsed = only toggle + input */
   .chat-area.collapsed{min-height:auto;max-height:none}
   .chat-area.collapsed .chat-messages{display:none}
 
   /* End screen */
   #endScreen{overflow-y:auto}
-  .end-container{padding:20px;max-height:none}
-  .end-title{font-size:1.8rem;margin-bottom:20px}
-  .podium-item{padding:10px}
-  .podium-avatar{font-size:1.5rem}
-  .podium-name{font-size:0.8rem}
+  .end-container{padding:16px;max-height:none}
+  .end-title{font-size:1.6rem;margin-bottom:16px}
+  .podium{gap:8px}
+  .podium-item{padding:8px}
+  .podium-avatar{font-size:1.3rem}
+  .podium-name{font-size:0.75rem}
+  .podium-score{font-size:0.7rem}
 
-  /* Toast above keyboard */
-  .toast{bottom:auto;top:60px}
+  /* Toast */
+  .toast{bottom:auto;top:50px;font-size:0.8rem;padding:8px 20px}
 }
 
 /* Small phones */
 @media(max-width:400px){
-  .word-hint{font-size:0.75rem;letter-spacing:1px}
-  .game-topbar{padding:3px 8px}
-  .topbar-right{display:none}
-  .color-swatch{width:18px;height:18px}
-  .mp-item{min-width:48px;padding:3px 6px}
-  .mp-avatar{font-size:1.1rem}
+  .word-hint{font-size:0.7rem;letter-spacing:1px}
+  .game-topbar{padding:2px 6px}
+  .color-swatch{width:16px;height:16px}
+  .mp-item{min-width:44px;padding:2px 4px}
+  .mp-item .mp-avatar{font-size:1rem}
+  .mp-item .mp-name{font-size:0.55rem}
+  .end-title{font-size:1.4rem}
 }

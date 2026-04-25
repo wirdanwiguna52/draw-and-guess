@@ -84,17 +84,16 @@
                 </div>
                 <!-- Drawing Tools -->
                 <div class="tools-bar" id="toolsBar">
-                    <div class="color-palette" id="colorPalette"></div>
                     <div class="tool-group">
                         <button class="tool-btn active" data-tool="brush" title="Kuas">🖌️</button>
                         <button class="tool-btn" data-tool="eraser" title="Penghapus">🧽</button>
                         <button class="tool-btn" data-tool="fill" title="Isi warna">🪣</button>
+                        <button class="tool-btn danger" id="btnClear" title="Hapus semua">🗑️</button>
                     </div>
                     <div class="size-slider">
-                        <label>Ukuran</label>
                         <input type="range" id="brushSize" min="2" max="30" value="5">
                     </div>
-                    <button class="tool-btn danger" id="btnClear" title="Hapus semua">🗑️</button>
+                    <div class="color-palette" id="colorPalette"></div>
                 </div>
                 <!-- Word Choice Overlay -->
                 <div class="overlay hidden" id="wordChoiceOverlay">
