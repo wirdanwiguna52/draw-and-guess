@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Draw & Guess 🎨 | Multiplayer Online</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- LOBBY SCREEN -->
+    <div class="screen active" id="lobbyScreen">
+        <div class="lobby-bg-shapes"><div class="shape s1"></div><div class="shape s2"></div><div class="shape s3"></div></div>
+        <div class="lobby-container">
+            <div class="lobby-header">
+                <h1 class="lobby-title">🎨 Draw <span class="accent">&</span> Guess</h1>
+                <p class="lobby-subtitle">Gambar, tebak, dan ketawa bareng teman-teman!</p>
+            </div>
+            <div class="lobby-card" id="joinCard">
+                <div class="input-group">
+                    <label>Nama Kamu</label>
+                    <input type="text" id="playerName" placeholder="Masukkan nama..." maxlength="15" autocomplete="off">
+                </div>
+                <div class="avatar-picker">
+                    <label>Pilih Avatar</label>
+                    <div class="avatar-grid" id="avatarGrid"></div>
+                </div>
+                <div class="lobby-buttons">
+                    <button class="btn btn-primary btn-lg" id="btnCreate">🏠 Buat Room</button>
+                    <div class="divider-text"><span>atau</span></div>
+                    <div class="join-row">
+                        <input type="text" id="roomCode" placeholder="Kode Room" maxlength="6" class="room-input" autocomplete="off">
+                        <button class="btn btn-accent" id="btnJoin">🚪 Gabung</button>
+                    </div>
+                </div>
+            </div>
+            <!-- Waiting Room -->
+            <div class="lobby-card hidden" id="waitingCard">
+                <div class="room-code-display">
+                    <span>Kode Room:</span>
+                    <div class="code-box" id="displayCode">------</div>
+                    <button class="btn-copy" id="btnCopy" title="Salin kode">📋</button>
+                </div>
+                <div class="waiting-players" id="waitingPlayers"></div>
+                <p class="waiting-text">Menunggu pemain lain... (min. 2 orang)</p>
+                <button class="btn btn-primary btn-lg hidden" id="btnStart">🎮 Mulai Game!</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- GAME SCREEN -->
+    <div class="screen" id="gameScreen">
+        <!-- Top Bar -->
+        <div class="game-topbar">
+            <div class="topbar-left">
+                <span class="round-info" id="roundInfo">Round 1/3</span>
+                <span class="word-hint" id="wordHint">_ _ _ _ _</span>
+            </div>
+            <div class="topbar-center">
+                <div class="timer-circle" id="timerCircle">
+                    <svg viewBox="0 0 40 40"><circle cx="20" cy="20" r="18" class="timer-bg"/><circle cx="20" cy="20" r="18" class="timer-fg" id="timerFg"/></svg>
+                    <span class="timer-text" id="timerText">80</span>
+                </div>
+            </div>
+            <div class="topbar-right">
+                <span class="drawer-name" id="drawerName">🎨 Menunggu...</span>
+            </div>
+        </div>
+
+        <!-- Main Game Area -->
+        <div class="game-main">
+            <!-- Players Sidebar -->
+            <div class="players-sidebar" id="playersSidebar"></div>
+
+            <!-- Canvas Area -->
+            <div class="canvas-area">
+                <canvas id="gameCanvas" width="800" height="500"></canvas>
+                <!-- Drawing Tools -->
+                <div class="tools-bar" id="toolsBar">
+                    <div class="color-palette" id="colorPalette"></div>
+                    <div class="tool-group">
+                        <button class="tool-btn active" data-tool="brush" title="Kuas">🖌️</button>
+                        <button class="tool-btn" data-tool="eraser" title="Penghapus">🧽</button>
+                        <button class="tool-btn" data-tool="fill" title="Isi warna">🪣</button>
+                    </div>
+                    <div class="size-slider">
+                        <label>Ukuran</label>
+                        <input type="range" id="brushSize" min="2" max="30" value="5">
+                    </div>
+                    <button class="tool-btn danger" id="btnClear" title="Hapus semua">🗑️</button>
+                </div>
+                <!-- Word Choice Overlay -->
+                <div class="overlay hidden" id="wordChoiceOverlay">
+                    <div class="overlay-content">
+                        <h3>Pilih kata untuk digambar:</h3>
+                        <div class="word-choices" id="wordChoices"></div>
+                    </div>
+                </div>
+                <!-- Turn End Overlay -->
+                <div class="overlay hidden" id="turnEndOverlay">
+                    <div class="overlay-content">
+                        <h3 id="turnEndTitle">Waktu habis!</h3>
+                        <p>Jawabannya: <strong id="turnEndWord"></strong></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Chat Area -->
+            <div class="chat-area">
+                <div class="chat-messages" id="chatMessages"></div>
+                <div class="chat-input-row">
+                    <input type="text" id="chatInput" placeholder="Ketik tebakan..." maxlength="50" autocomplete="off">
+                    <button class="btn-send" id="btnSend">➤</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- GAME END SCREEN -->
+    <div class="screen" id="endScreen">
+        <div class="lobby-bg-shapes"><div class="shape s1"></div><div class="shape s2"></div><div class="shape s3"></div></div>
+        <div class="end-container">
+            <h1 class="end-title">🏆 Game Selesai!</h1>
+            <div class="podium" id="podium"></div>
+            <div class="end-scores" id="endScores"></div>
+            <button class="btn btn-primary btn-lg" id="btnPlayAgain">🔄 Main Lagi</button>
+        </div>
+    </div>
+
+    <!-- Error Toast -->
+    <div class="toast hidden" id="toast"></div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
