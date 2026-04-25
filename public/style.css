@@ -226,15 +226,15 @@ a{text-decoration:none;color:inherit}
   .canvas-area{flex:1;min-height:0;overflow:hidden}
   .canvas-wrapper{flex:1;min-height:0}
 
-  /* Tools - compact, all visible in one row */
-  .tools-bar{gap:3px;padding:3px 6px;overflow-x:auto;flex-wrap:nowrap;-webkit-overflow-scrolling:touch;min-height:32px;align-items:center}
-  .color-palette{flex-wrap:nowrap;gap:1px;flex-shrink:0}
-  .color-swatch{width:18px;height:18px;flex-shrink:0}
-  .tool-group{flex-shrink:0}
-  .tool-btn{padding:3px 6px;font-size:0.8rem;flex-shrink:0}
-  .size-slider{flex-shrink:0;gap:3px}
-  .size-slider input[type=range]{width:40px}
+  /* Tools - TWO rows: tools on top, colors below */
+  .tools-bar{gap:2px;padding:3px 6px;flex-wrap:wrap;min-height:auto}
+  .tool-group{display:flex;gap:3px;flex-shrink:0;order:1}
+  .tool-btn{padding:3px 7px;font-size:0.85rem;flex-shrink:0}
+  .size-slider{flex-shrink:0;gap:3px;order:2}
+  .size-slider input[type=range]{width:50px}
   .size-slider label{display:none}
+  .color-palette{flex-wrap:nowrap;gap:2px;flex-shrink:0;order:3;width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch;padding-top:2px}
+  .color-swatch{width:18px;height:18px;flex-shrink:0}
 
   /* Overlays */
   .overlay-content{padding:16px}
