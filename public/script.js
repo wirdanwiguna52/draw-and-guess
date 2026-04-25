@@ -433,3 +433,43 @@ $("chatToggle")?.addEventListener("click", () => {
 $("roomCode").onkeydown = e => { if (e.key === "Enter") $("btnJoin").click(); };
 $("playerName").onkeydown = e => { if (e.key === "Enter") $("btnCreate").click(); };
 
+// ===== Mobile Fixes =====
+
+// Prevent double-tap zoom on canvas and tool buttons
+document.querySelectorAll("#gameCanvas, .tool-btn, .color-swatch").forEach(el => {
+  el.addEventListener("touchstart", e => { /* allow default for canvas drawing */ }, { passive: true });
+});
+
+// Handle mobile keyboard - scroll chat input into view
+$("chatInput").addEventListener("focus", () => {
+  // Expand chat if collapsed
+  const chatArea = $("chatArea");
+  if (chatArea && chatArea.classList.contains("collapsed")) {
+    chatArea.classList.remove("collapsed");
+    $("chatToggle").textContent = "💬 Chat & Tebakan ▼";
+    $("chatToggle").style.background = "";
+    unreadCount = 0;
+  }
+  // Scroll input into view after keyboard opens
+  setTimeout(() => {
+    $("chatInput").scrollIntoView({ behavior: "smooth", block: "nearest" });
+  }, 300);
+});
+
+// Dismiss keyboard on Enter in chat
+$("chatInput").addEventListener("keydown", e => {
+  if (e.key === "Enter") {
+    sendChat();
+    // On mobile, blur to dismiss keyboard after sending
+    if (window.innerWidth <= 768) {
+      setTimeout(() => $("chatInput").blur(), 100);
+    }
+  }
+});
+
+// Handle visual viewport resize (mobile keyboard open/close)
+if (window.visualViewport) {
+  window.visualViewport.addEventListener("resize", () => {
+    document.documentElement.style.height = window.visualViewport.height + "px";
+  });
+}
