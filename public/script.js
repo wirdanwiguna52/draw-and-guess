@@ -291,13 +291,24 @@ socket.on("chatMessage", ({ type, name, text }) => {
   addChatMsg(type, type === "system" ? text : `${name}: ${text}`, type === "close" ? "🔥 Hampir benar!" : "");
 });
 
+let unreadCount = 0;
+
 function addChatMsg(type, text, extra = "") {
   const div = document.createElement("div");
   div.className = `chat-msg ${type}`;
   div.textContent = text;
   if (extra) { const s = document.createElement("div"); s.textContent = extra; s.style.fontSize = "0.7rem"; div.appendChild(s); }
-  $("chatMessages").appendChild(div);
-  $("chatMessages").scrollTop = $("chatMessages").scrollHeight;
+  const msgs = $("chatMessages");
+  msgs.appendChild(div);
+  msgs.scrollTop = msgs.scrollHeight;
+
+  // If chat is collapsed on mobile, show unread badge
+  const chatArea = $("chatArea");
+  if (chatArea && chatArea.classList.contains("collapsed")) {
+    unreadCount++;
+    $("chatToggle").textContent = `💬 Chat & Tebakan ▲ (${unreadCount} baru)`;
+    $("chatToggle").style.background = "#FF6B9D";
+  }
 }
 
 // ===== Canvas =====
@@ -409,7 +420,13 @@ socket.on("clearCanvas", clearCanvasLocal);
 $("chatToggle")?.addEventListener("click", () => {
   const chat = $("chatArea");
   chat.classList.toggle("collapsed");
-  $("chatToggle").textContent = chat.classList.contains("collapsed") ? "💬 Chat & Tebakan ▲" : "💬 Chat & Tebakan ▼";
+  const isCollapsed = chat.classList.contains("collapsed");
+  $("chatToggle").textContent = isCollapsed ? "💬 Chat & Tebakan ▲" : "💬 Chat & Tebakan ▼";
+  $("chatToggle").style.background = "";
+  if (!isCollapsed) {
+    unreadCount = 0;
+    setTimeout(() => { $("chatMessages").scrollTop = $("chatMessages").scrollHeight; }, 50);
+  }
 });
 
 // ===== Enter key on room code =====

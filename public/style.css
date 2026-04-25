@@ -207,12 +207,12 @@ a{text-decoration:none;color:inherit}
   .canvas-area{flex:1;min-height:0}
   .canvas-wrapper{flex:1}
 
-  /* Chat at bottom */
-  .chat-area{width:100%;height:160px;border-left:none;border-top:1px solid var(--border);flex-shrink:0}
+  /* Chat at bottom - always visible */
+  .chat-area{width:100%;height:180px;border-left:none;border-top:1px solid var(--border);flex-shrink:0;display:flex;flex-direction:column}
   .chat-toggle{display:block}
   .chat-area.collapsed .chat-messages{display:none}
   .chat-area.collapsed{height:auto}
-  .chat-messages{max-height:80px}
+  .chat-messages{flex:1;overflow-y:auto;max-height:none}
 
   /* Tools compact */
   .tools-bar{gap:4px;padding:4px 8px;overflow-x:auto;flex-wrap:nowrap;-webkit-overflow-scrolling:touch}
