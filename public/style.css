@@ -102,6 +102,16 @@ a{text-decoration:none;color:inherit}
 .player-item .p-drawing{font-size:0.65rem;color:var(--primary-light)}
 .player-item .p-check{color:var(--green);font-size:0.9rem}
 
+/* Mobile Players Bar */
+.mobile-players-bar{display:none;overflow-x:auto;gap:6px;padding:6px 10px;background:var(--bg2);border-bottom:1px solid var(--border);flex-shrink:0;-webkit-overflow-scrolling:touch}
+.mobile-players-bar::-webkit-scrollbar{height:0}
+.mp-item{display:flex;flex-direction:column;align-items:center;gap:2px;padding:4px 8px;border-radius:10px;min-width:56px;flex-shrink:0;position:relative}
+.mp-item.drawing{background:rgba(108,99,255,0.15);border:1px solid rgba(108,99,255,0.3)}
+.mp-item .mp-avatar{font-size:1.3rem}
+.mp-item .mp-name{font-size:0.6rem;color:var(--text2);white-space:nowrap;max-width:55px;overflow:hidden;text-overflow:ellipsis}
+.mp-item .mp-score{font-size:0.65rem;color:var(--accent2);font-weight:700}
+.mp-item .mp-pen{position:absolute;top:-2px;right:-2px;font-size:0.6rem}
+
 /* Canvas */
 .canvas-area{flex:1;display:flex;flex-direction:column;position:relative;min-width:0;overflow:hidden}
 .canvas-wrapper{flex:1;display:flex;align-items:center;justify-content:center;background:#333;overflow:hidden;position:relative}
@@ -186,8 +196,9 @@ a{text-decoration:none;color:inherit}
   .timer-text{font-size:0.75rem}
   .drawer-name{font-size:0.75rem}
 
-  /* Hide sidebar on mobile */
+  /* Hide sidebar, show mobile players bar */
   .players-sidebar{display:none}
+  .mobile-players-bar{display:flex}
 
   /* Game layout vertical */
   .game-main{flex-direction:column}

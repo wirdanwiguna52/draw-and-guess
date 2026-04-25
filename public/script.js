@@ -215,8 +215,11 @@ socket.on("gameEnd", ({ players }) => {
 });
 
 function updatePlayers(players) {
+  const sorted = players.sort((a, b) => b.score - a.score);
+
+  // Desktop sidebar
   const sidebar = $("playersSidebar");
-  sidebar.innerHTML = players.sort((a, b) => b.score - a.score).map(p => `
+  sidebar.innerHTML = sorted.map(p => `
     <div class="player-item ${p.isDrawing ? 'drawing' : ''}">
       <span class="p-avatar">${p.avatar}</span>
       <div class="p-info">
@@ -226,6 +229,19 @@ function updatePlayers(players) {
       </div>
     </div>
   `).join("");
+
+  // Mobile players bar
+  const mobileBar = $("mobilePlayersBar");
+  if (mobileBar) {
+    mobileBar.innerHTML = sorted.map(p => `
+      <div class="mp-item ${p.isDrawing ? 'drawing' : ''}">
+        ${p.isDrawing ? '<span class="mp-pen">🖌️</span>' : ''}
+        <span class="mp-avatar">${p.avatar}</span>
+        <span class="mp-name">${p.name}</span>
+        <span class="mp-score">${p.score} pts</span>
+      </div>
+    `).join("");
+  }
 }
 
 function renderPodium(players) {
