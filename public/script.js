@@ -285,30 +285,50 @@ function addChatMsg(type, text, extra = "") {
 }
 
 // ===== Canvas =====
+const CANVAS_W = 800, CANVAS_H = 500;
+
 function initCanvas() {
   canvas = $("gameCanvas");
   ctx = canvas.getContext("2d");
-  resizeCanvas();
-  window.addEventListener("resize", resizeCanvas);
+  canvas.width = CANVAS_W;
+  canvas.height = CANVAS_H;
+  clearCanvasLocal();
 
-  canvas.onpointerdown = e => { if (!isDrawer) return; drawing = true; const p = getPos(e); lastX = p.x; lastY = p.y; if (tool === "fill") { floodFill(Math.round(p.x), Math.round(p.y), brushColor); socket.emit("draw", { type: "fill", x: p.x, y: p.y, color: brushColor }); drawing = false; } };
-  canvas.onpointermove = e => { if (!drawing || !isDrawer) return; const p = getPos(e); const data = { type: "line", x1: lastX, y1: lastY, x2: p.x, y2: p.y, color: tool === "eraser" ? "#ffffff" : brushColor, size: tool === "eraser" ? brushSz * 3 : brushSz }; drawLine(data); socket.emit("draw", data); lastX = p.x; lastY = p.y; };
+  // Pointer events
+  canvas.onpointerdown = e => {
+    if (!isDrawer) return;
+    e.preventDefault();
+    drawing = true;
+    const p = getPos(e);
+    lastX = p.x; lastY = p.y;
+    if (tool === "fill") {
+      floodFill(Math.round(p.x), Math.round(p.y), brushColor);
+      socket.emit("draw", { type: "fill", x: p.x, y: p.y, color: brushColor });
+      drawing = false;
+    }
+  };
+  canvas.onpointermove = e => {
+    if (!drawing || !isDrawer) return;
+    e.preventDefault();
+    const p = getPos(e);
+    const data = { type: "line", x1: lastX, y1: lastY, x2: p.x, y2: p.y, color: tool === "eraser" ? "#ffffff" : brushColor, size: tool === "eraser" ? brushSz * 3 : brushSz };
+    drawLine(data);
+    socket.emit("draw", data);
+    lastX = p.x; lastY = p.y;
+  };
   canvas.onpointerup = () => drawing = false;
   canvas.onpointerleave = () => drawing = false;
-}
 
-function resizeCanvas() {
-  const rect = canvas.parentElement.getBoundingClientRect();
-  const toolsH = $("toolsBar")?.offsetHeight || 50;
-  canvas.width = rect.width;
-  canvas.height = rect.height - toolsH;
-  ctx.fillStyle = "#ffffff";
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  // Prevent scroll while drawing on mobile
+  canvas.style.touchAction = "none";
 }
 
 function getPos(e) {
   const r = canvas.getBoundingClientRect();
-  return { x: (e.clientX - r.left) / r.width * canvas.width, y: (e.clientY - r.top) / r.height * canvas.height };
+  return {
+    x: (e.clientX - r.left) / r.width * CANVAS_W,
+    y: (e.clientY - r.top) / r.height * CANVAS_H
+  };
 }
 
 function drawLine({ x1, y1, x2, y2, color, size }) {
@@ -324,6 +344,7 @@ function drawLine({ x1, y1, x2, y2, color, size }) {
 
 function floodFill(sx, sy, fillColor) {
   const w = canvas.width, h = canvas.height;
+  if (sx < 0 || sx >= w || sy < 0 || sy >= h) return;
   const imgData = ctx.getImageData(0, 0, w, h);
   const data = imgData.data;
   const target = getPixel(data, sx, sy, w);
@@ -352,7 +373,7 @@ function hexToRgb(hex) { const r = parseInt(hex.slice(1,3),16), g = parseInt(hex
 function clearCanvasLocal() {
   if (!ctx) return;
   ctx.fillStyle = "#ffffff";
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  ctx.fillRect(0, 0, CANVAS_W, CANVAS_H);
 }
 
 $("btnClear").onclick = () => {
@@ -368,6 +389,14 @@ socket.on("draw", (data) => {
 });
 socket.on("clearCanvas", clearCanvasLocal);
 
+// ===== Chat Toggle (mobile) =====
+$("chatToggle")?.addEventListener("click", () => {
+  const chat = $("chatArea");
+  chat.classList.toggle("collapsed");
+  $("chatToggle").textContent = chat.classList.contains("collapsed") ? "💬 Chat & Tebakan ▲" : "💬 Chat & Tebakan ▼";
+});
+
 // ===== Enter key on room code =====
 $("roomCode").onkeydown = e => { if (e.key === "Enter") $("btnJoin").click(); };
 $("playerName").onkeydown = e => { if (e.key === "Enter") $("btnCreate").click(); };
+

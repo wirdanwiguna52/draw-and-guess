@@ -75,7 +75,9 @@
 
             <!-- Canvas Area -->
             <div class="canvas-area">
-                <canvas id="gameCanvas" width="800" height="500"></canvas>
+                <div class="canvas-wrapper">
+                    <canvas id="gameCanvas" width="800" height="500"></canvas>
+                </div>
                 <!-- Drawing Tools -->
                 <div class="tools-bar" id="toolsBar">
                     <div class="color-palette" id="colorPalette"></div>
@@ -107,7 +109,8 @@
             </div>
 
             <!-- Chat Area -->
-            <div class="chat-area">
+            <div class="chat-area" id="chatArea">
+                <button class="chat-toggle" id="chatToggle">💬 Chat & Tebakan ▼</button>
                 <div class="chat-messages" id="chatMessages"></div>
                 <div class="chat-input-row">
                     <input type="text" id="chatInput" placeholder="Ketik tebakan..." maxlength="50" autocomplete="off">
